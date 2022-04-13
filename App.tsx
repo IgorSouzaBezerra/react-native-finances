@@ -10,6 +10,7 @@ import {
 } from '@expo-google-fonts/poppins';
 import Toast from 'react-native-toast-message';
 import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AppRoutes } from './src/routes/app.routes';
 
@@ -27,11 +28,13 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <AppRoutes />
-      </NavigationContainer>
-      <Toast />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider theme={theme}>
+        <NavigationContainer>
+          <AppRoutes />
+        </NavigationContainer>
+        <Toast />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
