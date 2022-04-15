@@ -23,7 +23,7 @@ export function HighlightCard({ type, title, amount, lastTransaction }: Props) {
       </S.Header>
       <S.Footer>
         <S.Amount type={type}>{amount}</S.Amount>
-        <S.LastTransaction type={type}>{lastTransaction}l</S.LastTransaction>
+        <S.LastTransaction type={type}>{lastTransaction}</S.LastTransaction>
       </S.Footer>
     </S.Container>
   );
