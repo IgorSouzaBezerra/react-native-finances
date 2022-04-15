@@ -140,6 +140,10 @@ export function Dashboard() {
     setIsLoading(false);
   }
 
+  async function clear() {
+    AsyncStorage.clear();
+  }
+
   useEffect(() => {
     loadTransactions();
   }, []);
