@@ -11,6 +11,7 @@ import {
 } from '../../components/TransactionCard';
 
 import * as S from './styles';
+import { useAuth } from '../../hooks/auth';
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
@@ -29,6 +30,7 @@ interface HighLightData {
 
 export function Dashboard() {
   const theme = useTheme();
+  const { signOut, user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
@@ -62,7 +64,7 @@ export function Dashboard() {
   }
 
   async function loadTransactions() {
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 
@@ -109,7 +111,10 @@ export function Dashboard() {
       transactions,
       'negative'
     );
-    const totalInterval = `01 a ${lastTransactionExpensies}`;
+    const totalInterval =
+      lastTransactionExpensies === 0
+        ? `Não há transações`
+        : `01 a ${lastTransactionExpensies}`;
 
     const total = entriesTotal - expensiveTotal;
 
@@ -119,14 +124,20 @@ export function Dashboard() {
           style: 'currency',
           currency: 'BRL',
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionEntries}`,
+        lastTransaction:
+          lastTransactionEntries === 0
+            ? `Não há transações`
+            : `Última entrada dia ${lastTransactionEntries}`,
       },
       expensive: {
         amount: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }),
-        lastTransaction: `Última saída dia ${lastTransactionExpensies}`,
+        lastTransaction:
+          lastTransactionExpensies === 0
+            ? `Não há transações`
+            : `Última saída dia ${lastTransactionExpensies}`,
       },
       total: {
         amount: total.toLocaleString('pt-BR', {
@@ -167,15 +178,15 @@ export function Dashboard() {
               <S.UserInfo>
                 <S.Photo
                   source={{
-                    uri: 'https://avatars.githubusercontent.com/u/47788076?v=4',
+                    uri: user.photo,
                   }}
                 />
                 <S.User>
                   <S.UserGreeting>Olá,</S.UserGreeting>
-                  <S.UserName>Igor</S.UserName>
+                  <S.UserName>{user.name}</S.UserName>
                 </S.User>
               </S.UserInfo>
-              <S.LogoutButton onPress={() => {}}>
+              <S.LogoutButton onPress={signOut}>
                 <S.Icon name="power" />
               </S.LogoutButton>
             </S.UserWrapper>
