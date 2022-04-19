@@ -98,8 +98,6 @@ function AuthProvider({ children }: AuthProviderProps) {
           photo,
         };
 
-        console.log(userLogged);
-
         setUser(userLogged);
         await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       }
